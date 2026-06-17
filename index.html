@@ -1,71 +1,316 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>StitchyBag</title>
-
-<link rel="stylesheet" href="style.css">
-
+<title>StitchyBag – Chargement</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
 
+:root{
+  --night:#0C1520;
+  --navy:#13213A;
+  --gold:#C9A96E;
+  --gold-dim:rgba(201,169,110,.18);
+  --cream:#F0EAE0;
+  --muted:rgba(240,234,224,.5);
+  --faint:rgba(240,234,224,.12);
+}
+
+html,body{
+  height:100%;
+  font-family:'Jost',sans-serif;
+  background:var(--night);
+  color:var(--cream);
+  overflow:hidden;
+}
+
+/* ── Background texture (woven diagonals) ── */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background-image:
+    repeating-linear-gradient(45deg,transparent,transparent 28px,rgba(201,169,110,.025) 28px,rgba(201,169,110,.025) 29px),
+    repeating-linear-gradient(-45deg,transparent,transparent 28px,rgba(201,169,110,.025) 28px,rgba(201,169,110,.025) 29px);
+  pointer-events:none;z-index:0;
+}
+
+/* ── Ambient glow ── */
+body::after{
+  content:'';
+  position:fixed;
+  top:-20%;left:50%;
+  transform:translateX(-50%);
+  width:700px;height:600px;
+  background:radial-gradient(ellipse at center,rgba(201,169,110,.07) 0%,transparent 65%);
+  pointer-events:none;z-index:0;
+}
+
+/* ── Layout ── */
+.stage{
+  position:relative;z-index:1;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  min-height:100vh;
+  padding:40px 24px;
+  text-align:center;
+  gap:0;
+}
+
+/* ── Logo ── */
+.logo-wrap{
+  margin-bottom:36px;
+  animation:float 4s ease-in-out infinite;
+}
+.logo-wrap img{
+  width:130px;
+  opacity:.92;
+  filter:drop-shadow(0 8px 24px rgba(201,169,110,.2));
+}
+
+/* ── Brand name ── */
+.brand{
+  font-family:'Jost',sans-serif;
+  font-size:clamp(2.4rem,6vw,3.8rem);
+  font-weight:600;
+  letter-spacing:.35em;
+  line-height:1;
+  margin-bottom:6px;
+  color:var(--cream);
+}
+.brand em{
+  font-style:normal;
+  color:var(--gold);
+}
+
+.tagline{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-style:italic;
+  font-size:clamp(1rem,2.5vw,1.2rem);
+  color:var(--muted);
+  letter-spacing:.06em;
+  margin-bottom:52px;
+}
+
+/* ── Crochet thread loader (SVG path drawing) ── */
+.thread-wrap{
+  position:relative;
+  width:220px;height:60px;
+  margin-bottom:44px;
+}
+
+.thread-wrap svg{
+  width:100%;height:100%;
+  overflow:visible;
+}
+
+.thread-path{
+  fill:none;
+  stroke:var(--gold);
+  stroke-width:2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  stroke-dasharray:320;
+  stroke-dashoffset:320;
+  animation:draw-thread 2.2s cubic-bezier(.4,0,.2,1) infinite;
+}
+
+.thread-dot{
+  fill:var(--gold);
+  animation:pulse-dot 2.2s cubic-bezier(.4,0,.2,1) infinite;
+  opacity:0;
+}
+
+@keyframes draw-thread{
+  0%{stroke-dashoffset:320;opacity:1}
+  70%{stroke-dashoffset:0;opacity:1}
+  90%{stroke-dashoffset:0;opacity:.3}
+  100%{stroke-dashoffset:320;opacity:0}
+}
+@keyframes pulse-dot{
+  0%,10%{opacity:0;r:3}
+  60%{opacity:1;r:5}
+  100%{opacity:0;r:3}
+}
+
+/* ── Status text ── */
+.status-line{
+  font-size:.82rem;
+  font-weight:500;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:10px;
+  min-height:1.4em;
+  transition:opacity .4s;
+}
+
+.status-sub{
+  font-size:.88rem;
+  color:var(--muted);
+  font-weight:300;
+  letter-spacing:.04em;
+  margin-bottom:64px;
+}
+
+/* ── Divider ── */
+.divider{
+  display:flex;align-items:center;gap:16px;
+  width:260px;
+  margin-bottom:56px;
+}
+.divider::before,.divider::after{
+  content:'';flex:1;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(201,169,110,.3),transparent);
+}
+.divider-icon{
+  color:var(--gold);
+  font-size:.75rem;
+  letter-spacing:.2em;
+  opacity:.6;
+}
+
+/* ── Feature pills ── */
+.features{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+
+.pill{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:9px 18px;
+  border:1px solid rgba(201,169,110,.2);
+  border-radius:50px;
+  font-size:.78rem;
+  font-weight:500;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--muted);
+  background:var(--faint);
+  backdrop-filter:blur(4px);
+}
+.pill-dot{
+  width:5px;height:5px;
+  border-radius:50%;
+  background:var(--gold);
+  flex-shrink:0;
+  opacity:.7;
+}
+
+/* ── Bottom bar ── */
+.bottom{
+  position:fixed;
+  bottom:0;left:0;right:0;
+  height:3px;
+  background:rgba(201,169,110,.1);
+  z-index:2;
+}
+.bottom-progress{
+  height:100%;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  animation:sweep 2.2s ease-in-out infinite;
+}
+
+@keyframes sweep{
+  0%{width:0%;margin-left:0}
+  50%{width:60%;margin-left:20%}
+  100%{width:0%;margin-left:100%}
+}
+
+/* ── Float animation ── */
+@keyframes float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-8px)}
+}
+
+/* ── Responsive ── */
+@media(max-width:480px){
+  .brand{letter-spacing:.2em}
+  .features{gap:8px}
+  .pill{font-size:.72rem;padding:8px 14px}
+}
+</style>
 </head>
-
 <body>
 
-<div class="container">
+<div class="stage">
 
-    <img src="logo.png" class="logo" alt="StitchyBag">
+  <div class="logo-wrap">
+    <img src="logo.png" alt="StitchyBag">
+  </div>
 
-    <h1>STITCHY<span>BAG</span></h1>
+  <h1 class="brand">STITCHY<em>BAG</em></h1>
+  <p class="tagline">Handmade by Hanen</p>
 
-    <h3>Handmade By Hanen</h3>
+  <!-- Animated crochet thread -->
+  <div class="thread-wrap" aria-hidden="true">
+    <svg viewBox="0 0 220 60" xmlns="http://www.w3.org/2000/svg">
+      <!-- Wavy thread path suggesting crochet chain stitches -->
+      <path class="thread-path"
+        d="M10,30 C22,10 38,10 50,30 C62,50 78,50 90,30 C102,10 118,10 130,30 C142,50 158,50 170,30 C182,10 198,10 210,30"/>
+      <circle class="thread-dot" cx="210" cy="30" r="4"/>
+    </svg>
+  </div>
 
-    <div class="separator"></div>
+  <p class="status-line" id="status">Réveil de la boutique…</p>
+  <p class="status-sub">Merci de patienter, quelque chose de beau se prépare.</p>
 
-    <div class="loader"></div>
+  <div class="divider" aria-hidden="true">
+    <span class="divider-icon">✦</span>
+  </div>
 
-    <h2 id="status">
-        Préparation de votre boutique...
-    </h2>
-
-    <p>
-        Merci de patienter, nous préparons quelque chose de beau pour vous.
-    </p>
-
-    <div class="features">
-
-        <div class="feature">
-            ❤
-            <span>Fait main avec passion</span>
-        </div>
-
-        <div class="feature">
-            👜
-            <span>Qualité premium</span>
-        </div>
-
-        <div class="feature">
-            🌿
-            <span>Matériaux sélectionnés</span>
-        </div>
-
-    </div>
+  <div class="features">
+    <div class="pill"><span class="pill-dot"></span>Fait main</div>
+    <div class="pill"><span class="pill-dot"></span>Qualité premium</div>
+    <div class="pill"><span class="pill-dot"></span>Matières naturelles</div>
+  </div>
 
 </div>
 
-<div class="bottom-wave">
-
-    <div class="redirect">
-        Vous allez être redirigé automatiquement...
-    </div>
-
+<div class="bottom" aria-hidden="true">
+  <div class="bottom-progress"></div>
 </div>
 
-<script src="script.js"></script>
+<script>
+const status = document.getElementById("status");
+
+const messages = [
+  "Réveil de la boutique…",
+  "Connexion en cours…",
+  "Chargement de la collection…",
+  "Presque prêt…"
+];
+let msgIndex = 0;
+
+function cycleMessage() {
+  msgIndex = (msgIndex + 1) % messages.length;
+  status.style.opacity = "0";
+  setTimeout(() => {
+    status.textContent = messages[msgIndex];
+    status.style.opacity = "1";
+  }, 300);
+}
+setInterval(cycleMessage, 3000);
+
+async function wakeSite() {
+  try {
+    status.textContent = "Connexion à la boutique…";
+    await fetch("https://stitchybag.onrender.com", { mode: "no-cors" });
+    status.textContent = "Boutique prête — redirection…";
+    setTimeout(() => { window.location.href = "https://stitchybag.onrender.com"; }, 800);
+  } catch {
+    status.textContent = "Réveil de la boutique…";
+    setTimeout(wakeSite, 5000);
+  }
+}
+
+wakeSite();
+</script>
 
 </body>
 </html>
